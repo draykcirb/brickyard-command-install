@@ -7,7 +7,7 @@ const Promise = require('bluebird')
 const _ = require('lodash')
 
 const logger = require('log4js').getLogger('install-command')
-const butil = require('../../util')
+const butil = require('brickyard/lib/util')
 const npmInstaller = require('./npmInstaller')
 const bowerInstaller = require('./bowerInstaller')
 
