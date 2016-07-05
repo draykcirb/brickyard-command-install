@@ -4,6 +4,7 @@ node_modules
 bower_components
 test
 tests
+test-resources
 support
 benchmarks
 examples
