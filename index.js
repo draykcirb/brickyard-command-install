@@ -7,7 +7,7 @@ const Promise = require('bluebird')
 const _ = require('lodash')
 
 const logger = require('log4js').getLogger('install-command')
-const butil = require('brickyard/lib/util')
+const butil = require('brickyard3/lib/util')
 const npmInstaller = require('./npmInstaller')
 const bowerInstaller = require('./bowerInstaller')
 
@@ -45,7 +45,7 @@ function run(runtime) {
 	const npmInstallConfig = {}
 
 	if (runtime.config.registry) {
-		npmInstallConfig['registry'] = runtime.config.registry
+		npmInstallConfig.registry = runtime.config.registry
 	}
 
 	return Promise.reduce(
@@ -57,7 +57,7 @@ function run(runtime) {
 				return bowerInstaller.checkAndInstall(bowerDeps, {
 					cwd: runtime.config.dest,
 					loglevel: 'action',
-					//quiet: true,
+					// quiet: true,
 					offline: runtime.config.offline
 				})
 			}
@@ -84,7 +84,7 @@ function run(runtime) {
  */
 function getDependencies(packages, dev) {
 	return packages.reduce(function (result, obj) {
-		_.assignIn(result, obj['dependencies'], dev ? obj['devDependencies'] : {})
+		_.assignIn(result, obj.dependencies, dev ? obj.devDependencies : {})
 
 		return result
 	}, {})

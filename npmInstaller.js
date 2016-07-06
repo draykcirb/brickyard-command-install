@@ -79,7 +79,7 @@ function installNpmPackages(dependencies) {
  */
 function createNpmDependenciesArray(dependencies) {
 	const result = _.map(dependencies, function (dep, name) {
-		return name + '@' + dep
+		return `${name}@${dep}`
 	})
 
 	logger.trace('bower dependencies array is: ', result)

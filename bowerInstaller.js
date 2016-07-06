@@ -1,3 +1,4 @@
+/* eslint indent: 1 */
 /**
  * Created by scott on 16-3-9.
  */
@@ -36,13 +37,7 @@ function checkAndInstall(targetDependencies, option) {
  * @param {Object} option - allowed option: cwd, offline, loglevel[error], force
  * @returns {bluebird|Promise.<T>}
  */
-function installBowerPackages(dependencies, option) {
-	if (!option) {
-		option = {
-			cwd: '.'
-		}
-	}
-
+function installBowerPackages(dependencies, option = { cwd: '.' }) {
 	logger.trace('bower packages to be installed are: ', dependencies)
 	logger.trace('and install option is: ', option)
 
@@ -78,7 +73,7 @@ function installBowerPackages(dependencies, option) {
  */
 function createBowerDependenciesArray(dependencies) {
 	const result = _.map(dependencies, function (dep, name) {
-		return name + '#' + dep
+		return `${name}#${dep}`
 	})
 
 	logger.trace('bower dependencies array is: ', result)
