@@ -135,6 +135,6 @@ function extractInstalledPackagesData() {
 		})
 		.catch(function (err) {
 			logger.error(err)
-			return error
+			return err
 		})
 }
