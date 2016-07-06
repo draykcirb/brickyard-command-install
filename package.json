@@ -20,7 +20,7 @@
     "bower": "^1.7.0",
     "lodash": "^4.6.1",
     "log4js": "^0.6.33",
-    "npm": "~3.9.1",
+    "npm": "~3.10.1",
     "semver": "^5.1.0"
   },
   "devDependencies": {
@@ -34,6 +34,9 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "validate-commit-msg": "^2.6.1"
+  },
+  "peerDependencies": {
+    "brickyard3": "~1.0.0"
   },
   "config": {
     "validate-commit-msg": {
