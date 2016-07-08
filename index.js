@@ -24,6 +24,7 @@ module.exports = {
  */
 function register(cmd, optionsCallback) {
 	cmd
+		.alias('i')
 		.description('install all dependencies of target program')
 		.arguments('<program...>')
 		.usage('<program...> [options]')
