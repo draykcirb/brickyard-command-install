@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint *.js",
     "test": "mocha test",
-    "test-cov": "istanbul cover mocha -- -i --reporter dot --check-leaks test"
+    "test-cov": "istanbul cover mocha -- -i --reporter dot --check-leaks test",
+    "postversion": "git push && git push --tags && npm publish . --registry=https://registry.npmjs.org/"
   },
   "keywords": [
     "install",
