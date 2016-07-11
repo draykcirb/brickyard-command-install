@@ -16,6 +16,10 @@
   ],
   "author": "e-cloud",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:draykcirb/brickyard-command-install.git"
+  },
   "dependencies": {
     "bluebird": "^3.3.4",
     "bower": "^1.7.0",
