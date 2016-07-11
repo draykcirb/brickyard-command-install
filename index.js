@@ -23,7 +23,7 @@ module.exports = {
  * @param {function(Object)} optionsCallback
  */
 function register(cmd, optionsCallback) {
-	cmd
+	return cmd
 		.alias('i')
 		.description('install all dependencies of target program')
 		.arguments('<program...>')
