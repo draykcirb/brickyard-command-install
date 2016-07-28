@@ -80,7 +80,7 @@ function createBowerDependenciesArray(dependencies) {
 		}
 	})
 
-	logger.trace('bower dependencies array is: ', result)
+	logger.trace('bower dependencies array is: \n', result)
 
 	return result
 }
@@ -95,12 +95,12 @@ function createBowerDependenciesArray(dependencies) {
  */
 function diffBowerInstalledPackages(targetDependencies, dir) {
 	logger.info('checking bower dependencies...')
-	logger.trace('target bower packages are: ', targetDependencies)
+	logger.trace('target bower packages are: \n', targetDependencies)
 	logger.trace('target installation dir is: ', dir)
 
 	return extractInstalledBowerDependencies(dir)
 		.then(function (installedPackages) {
-			logger.trace('installed bower packages are: ', installedPackages)
+			logger.trace('installed bower packages are: \n', installedPackages)
 
 			return _.omitBy(targetDependencies, function (targetVersion, name) {
 				if (installedPackages[name]) {
@@ -150,7 +150,7 @@ function extractInstalledBowerDependencies(dir) {
 						return result
 					}, {})
 
-				logger.debug('packages installed before are: ', installedBowerPackages)
+				logger.debug('packages installed before are: \n', installedBowerPackages)
 
 				resolve(installedBowerPackages)
 			})

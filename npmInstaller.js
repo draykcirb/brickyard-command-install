@@ -54,7 +54,7 @@ function checkAndInstall(targetDependencies, config) {
  * @returns {Promise.<T>}
  */
 function installNpmPackages(dependencies) {
-	logger.trace('npm packages to be installed are: ', dependencies)
+	logger.trace('npm packages to be installed are: \n', dependencies)
 
 	return npmLoad()
 		.then(function () {
@@ -64,7 +64,7 @@ function installNpmPackages(dependencies) {
 			return installCmd('.', createNpmDependenciesArray(dependencies))
 		})
 		.then(function (list) {
-			logger.debug('installed npm packages: ', list[0])
+			logger.debug('installed npm packages: \n', list[0])
 			logger.info('npm installation finished.')
 			return list
 		})
@@ -83,7 +83,7 @@ function createNpmDependenciesArray(dependencies) {
 		return `${name}@${dep}`
 	})
 
-	logger.trace('npm dependencies array is: ', result)
+	logger.trace('npm dependencies array is: \n', result)
 
 	return result
 }
@@ -98,10 +98,12 @@ function createNpmDependenciesArray(dependencies) {
 function diffNpmInstalledPackages(targetDependencies) {
 	logger.info('checking npm dependencies...')
 
-	logger.trace('target bower packages are: ', targetDependencies)
+	logger.trace('target npm packages are:\n', targetDependencies)
 
 	return extractInstalledPackagesData()
 		.then(function (installedPackages) {
+			logger.debug('installed npm packages are\n', _.keys(installedPackages))
+
 			return _.omitBy(targetDependencies, function (targetVersion, name) {
 				if (installedPackages[name]) {
 					if (semver.satisfies(installedPackages[name].version, targetVersion)) {
