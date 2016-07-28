@@ -1,3 +1,4 @@
+/* eslint import/no-extraneous-dependencies:0 */
 /**
  * Created by scott on 16-3-10.
  */
@@ -15,8 +16,8 @@ const npmInstaller = require('../npmInstaller')
 describe('#Npm installer test', function () {
 	before('', function () {
 		return Promise.promisify(npm.load)({
-			//global: true,
-			//prefix: './test-resources',
+			// global: true,
+			// prefix: './test-resources',
 			color: false,
 			loglevel: 'silent',
 			progress: false,
@@ -25,9 +26,7 @@ describe('#Npm installer test', function () {
 	})
 
 	describe('checker test', function () {
-
-		it('should return the unmatched dependencies $$ assume current npm->3.x and bower->1.7.x $$', function () {
-
+		it('should return the unmatched dependencies', function () {
 			this.timeout(30000)
 
 			const targetDeps = {
@@ -43,15 +42,13 @@ describe('#Npm installer test', function () {
 	})
 
 	describe('installer test', function () {
-
-
 		const nmPath = './node_modules/'
 
 		it('should install the null package `null`', function () {
 			this.timeout(60000)
 
 			const targetDeps = {
-				'null': 'latest'
+				null: 'latest'
 			}
 
 			return npmInstaller.install(targetDeps)
@@ -66,5 +63,21 @@ describe('#Npm installer test', function () {
 		})
 	})
 
+	describe('lister test', function () {
+		it('should return the installed dependencies', function () {
+			this.timeout(30000)
 
+			const targetDeps = {
+				'angular-ladda': '~0.4.0',
+			}
+
+			return npmInstaller.install(targetDeps)
+				.then(function () {
+					return npmInstaller.extractInstalledPackagesData()
+				})
+				.then(function (installedPackages) {
+					expect(installedPackages).to.contain.all.keys(['angular', 'ladda'])
+				})
+		})
+	})
 })

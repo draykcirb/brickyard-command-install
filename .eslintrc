@@ -19,5 +19,9 @@
 		"no-loop-func": 1,
 		"prefer-arrow-callback": 1,
 		"strict": 0
-	}
+	},
+	"env": {
+        "node": true,
+        "mocha": true
+    }
 }
