@@ -73,7 +73,11 @@ function installBowerPackages(dependencies, option = { cwd: '.' }) {
  */
 function createBowerDependenciesArray(dependencies) {
 	const result = _.map(dependencies, function (dep, name) {
-		return `${name}#${dep}`
+		if (semver.valid(dep)) {
+			return `${name}#${dep}`
+		} else {
+			return dep
+		}
 	})
 
 	logger.trace('bower dependencies array is: ', result)
