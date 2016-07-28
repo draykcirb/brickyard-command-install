@@ -15,7 +15,8 @@ const npmLoad = Promise.promisify(npm.load)
 module.exports = {
 	diff: diffNpmInstalledPackages,
 	install: installNpmPackages,
-	checkAndInstall: checkAndInstall
+	checkAndInstall: checkAndInstall,
+	extractInstalledPackagesData
 }
 
 /**
@@ -131,12 +132,13 @@ function extractInstalledPackagesData() {
 			return listCmd(null, true)
 		})
 		.spread(function (data, liteData) {
-			const result = _.cloneDeep(liteData.dependencies)
+			const result = _.clone(data.dependencies)
 
 			if (result) {
-				return _.reduce(liteData.dependencies, function (pkg) {
-					Object.assign(result, pkg.dependencies)
-					return result
+				return _.reduce(data.dependencies, function (accum, pkg) {
+					// todo: here use npm's inner custom property, may crash in the future
+					Object.assign(accum, pkg._dependencies)
+					return accum
 				}, result)
 			}
 

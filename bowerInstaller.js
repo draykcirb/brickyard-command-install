@@ -73,7 +73,7 @@ function installBowerPackages(dependencies, option = { cwd: '.' }) {
  */
 function createBowerDependenciesArray(dependencies) {
 	const result = _.map(dependencies, function (dep, name) {
-		if (semver.valid(dep)) {
+		if (semver.validRange(dep)) {
 			return `${name}#${dep}`
 		} else {
 			return dep
