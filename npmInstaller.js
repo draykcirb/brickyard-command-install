@@ -82,7 +82,7 @@ function createNpmDependenciesArray(dependencies) {
 		return `${name}@${dep}`
 	})
 
-	logger.trace('bower dependencies array is: ', result)
+	logger.trace('npm dependencies array is: ', result)
 
 	return result
 }
@@ -131,7 +131,16 @@ function extractInstalledPackagesData() {
 			return listCmd(null, true)
 		})
 		.spread(function (data, liteData) {
-			return liteData.dependencies || {}
+			const result = _.cloneDeep(liteData.dependencies)
+
+			if (result) {
+				return _.reduce(liteData.dependencies, function (pkg) {
+					Object.assign(result, pkg.dependencies)
+					return result
+				}, result)
+			}
+
+			return result || {}
 		})
 		.catch(function (err) {
 			logger.error(err)
