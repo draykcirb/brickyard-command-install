@@ -6,6 +6,8 @@
 const npm = require('npm')
 const Promise = require('bluebird')
 const semver = require('semver')
+const glob = require('glob')
+const path = require('path')
 const _ = require('lodash')
 const logger = require('log4js').getLogger('NpmInstaller')
 
@@ -41,8 +43,10 @@ function checkAndInstall(targetDependencies, config) {
 		})
 		.then(function (dependencies) {
 			if (_.isEmpty(dependencies)) {
+				logger.debug('no npm dependencies need to be installed')
 				return Promise.resolve()
 			}
+
 			return installNpmPackages(dependencies)
 		})
 }
@@ -128,23 +132,21 @@ function diffNpmInstalledPackages(targetDependencies) {
 function extractInstalledPackagesData() {
 	return npmLoad()
 		.then(function () {
-			const listCmd = Promise.promisify(npm.commands.list, { multiArgs: true })
+			const listCmd = Promise.promisify(glob, { multiArgs: true })
 
 			logger.trace('listing npm packages...')
-			return listCmd(null, true)
+
+			const nodePath = path.join(process.cwd(), 'node_modules/*/package.json')
+			return listCmd(nodePath, null)
 		})
-		.spread(function (data, liteData) {
-			const result = _.clone(data.dependencies)
+		.spread(function (data) {
+			const result = {}
 
-			if (result) {
-				return _.reduce(data.dependencies, function (accum, pkg) {
-					// todo: here use npm's inner custom property, may crash in the future
-					Object.assign(accum, pkg._dependencies)
-					return accum
-				}, result)
-			}
-
-			return result || {}
+			return _.reduce(data, function (accum, pkgPath) {
+				const pkg = require(pkgPath)
+				accum[pkg.name] = pkg
+				return accum
+			}, result)
 		})
 		.catch(function (err) {
 			logger.error(err)

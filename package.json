@@ -24,6 +24,7 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "bower": "^1.7.0",
+    "glob": "^7.0.5",
     "lodash": "^4.6.1",
     "log4js": "^0.6.33",
     "npm": "~3.10.1",
