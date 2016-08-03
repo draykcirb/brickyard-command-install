@@ -14,7 +14,7 @@ const devNull = require('dev-null')
 const npmInstaller = require('../npmInstaller')
 
 describe('#Npm installer test', function () {
-	before('', function () {
+	before('init the npm environment', function () {
 		return Promise.promisify(npm.load)({
 			// global: true,
 			// prefix: './test-resources',
@@ -31,7 +31,7 @@ describe('#Npm installer test', function () {
 
 			const targetDeps = {
 				lodash: '~3.10.1',
-				mocha: '^2.4.0'
+				mocha: '^3.0.0'
 			}
 
 			return npmInstaller.diff(targetDeps)
@@ -76,7 +76,7 @@ describe('#Npm installer test', function () {
 					return npmInstaller.extractInstalledPackagesData()
 				})
 				.then(function (installedPackages) {
-					expect(installedPackages).to.contain.all.keys(['angular', 'ladda'])
+					expect(installedPackages).to.contain.all.keys(['angular-ladda', 'ladda'])
 				})
 		})
 	})
