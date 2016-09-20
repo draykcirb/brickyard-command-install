@@ -10,53 +10,53 @@ const path = require('path')
 const bowerInstaller = require('../bowerInstaller')
 
 describe('#Bower installer test', function () {
-	const targetPath = './test-resources/'
+    const targetPath = './test-resources/'
 
-	before('delete the temporarily installed package', function () {
-		return del(targetPath + 'bower_components')
-	})
+    before('delete the temporarily installed package', function () {
+        return del(targetPath + 'bower_components')
+    })
 
-	after('delete the temporarily installed package', function () {
-		return del(targetPath + 'bower_components')
-	})
+    after('delete the temporarily installed package', function () {
+        return del(targetPath + 'bower_components')
+    })
 
-	describe('installer test', function () {
+    describe('installer test', function () {
 
-		it('should install the package `underscore`', function () {
-			this.timeout(60000)
+        it('should install the package `underscore`', function () {
+            this.timeout(60000)
 
-			const targetDeps = {
-				underscore: '~1.8.3',
-				'hint.css': '2.2.0'
-			}
+            const targetDeps = {
+                underscore: '~1.8.3',
+                'hint.css': '2.2.0'
+            }
 
-			return bowerInstaller.install(targetDeps, {
-					cwd: targetPath,
-					loglevel: 'error'
-				})
-				.then(function () {
-					const exist = fs.existsSync(path.join(targetPath, 'bower_components', 'underscore'))
-					expect(exist).to.be.equal(true)
-				})
-		})
-	})
+            return bowerInstaller.install(targetDeps, {
+                    cwd: targetPath,
+                    loglevel: 'error'
+                })
+                .then(function () {
+                    const exist = fs.existsSync(path.join(targetPath, 'bower_components', 'underscore'))
+                    expect(exist).to.be.equal(true)
+                })
+        })
+    })
 
-	describe('checker test', function () {
+    describe('checker test', function () {
 
-		it('should return the unmatched dependencies', function () {
+        it('should return the unmatched dependencies', function () {
 
-			this.timeout(30000)
+            this.timeout(30000)
 
-			const targetDeps = {
-				underscore: '1.7.x',
-				'hint.css': '^2.0.0'
-			}
+            const targetDeps = {
+                underscore: '1.7.x',
+                'hint.css': '^2.0.0'
+            }
 
-			return bowerInstaller.diff(targetDeps, targetPath)
-				.then(function (checkResult) {
-					expect(checkResult).to.be.eql({ underscore: '1.7.x' })
-				})
-		})
-	})
+            return bowerInstaller.diff(targetDeps, targetPath)
+                .then(function (checkResult) {
+                    expect(checkResult).to.be.eql({ underscore: '1.7.x' })
+                })
+        })
+    })
 
 })

@@ -15,10 +15,10 @@ const logger = require('log4js').getLogger('NpmInstaller')
 const npmLoad = Promise.promisify(npm.load)
 
 module.exports = {
-	diff: diffNpmInstalledPackages,
-	install: installNpmPackages,
-	checkAndInstall: checkAndInstall,
-	extractInstalledPackagesData
+    diff: diffNpmInstalledPackages,
+    install: installNpmPackages,
+    checkAndInstall: checkAndInstall,
+    extractInstalledPackagesData
 }
 
 /**
@@ -28,27 +28,27 @@ module.exports = {
  * @returns {Promise.<T>}
  */
 function checkAndInstall(targetDependencies, config) {
-	logger.debug('install config is: ', config)
+    logger.debug('install config is: ', config)
 
-	if (!_.isPlainObject(config)) {
-		throw new Error('npm install config must be an Object')
-	}
+    if (!_.isPlainObject(config)) {
+        throw new Error('npm install config must be an Object')
+    }
 
-	/**
-	 * npm.load 有个特性是load之后再次load传入的config不会生效，所以要预载
-	 */
-	return npmLoad(config)
-		.then(function () {
-			return diffNpmInstalledPackages(targetDependencies)
-		})
-		.then(function (dependencies) {
-			if (_.isEmpty(dependencies)) {
-				logger.debug('no npm dependencies need to be installed')
-				return Promise.resolve()
-			}
+    /**
+     * npm.load 有个特性是load之后再次load传入的config不会生效，所以要预载
+     */
+    return npmLoad(config)
+        .then(function () {
+            return diffNpmInstalledPackages(targetDependencies)
+        })
+        .then(function (dependencies) {
+            if (_.isEmpty(dependencies)) {
+                logger.debug('no npm dependencies need to be installed')
+                return Promise.resolve()
+            }
 
-			return installNpmPackages(dependencies)
-		})
+            return installNpmPackages(dependencies)
+        })
 }
 
 /**
@@ -58,20 +58,20 @@ function checkAndInstall(targetDependencies, config) {
  * @returns {Promise.<T>}
  */
 function installNpmPackages(dependencies) {
-	logger.trace('npm packages to be installed are: \n', dependencies)
+    logger.trace('npm packages to be installed are: \n', dependencies)
 
-	return npmLoad()
-		.then(function () {
-			const installCmd = Promise.promisify(npm.commands.install, { multiArgs: true })
+    return npmLoad()
+        .then(function () {
+            const installCmd = Promise.promisify(npm.commands.install, { multiArgs: true })
 
-			logger.info('installing npm dependencies...')
-			return installCmd('.', createNpmDependenciesArray(dependencies))
-		})
-		.then(function (list) {
-			logger.debug('installed npm packages: \n', list[0])
-			logger.info('npm installation finished.')
-			return list
-		})
+            logger.info('installing npm dependencies...')
+            return installCmd('.', createNpmDependenciesArray(dependencies))
+        })
+        .then(function (list) {
+            logger.debug('installed npm packages: \n', list[0])
+            logger.info('npm installation finished.')
+            return list
+        })
 }
 
 /**
@@ -83,13 +83,13 @@ function installNpmPackages(dependencies) {
  * @returns {Array}
  */
 function createNpmDependenciesArray(dependencies) {
-	const result = _.map(dependencies, function (dep, name) {
-		return `${name}@${dep}`
-	})
+    const result = _.map(dependencies, function (dep, name) {
+        return `${name}@${dep}`
+    })
 
-	logger.trace('npm dependencies array is: \n', result)
+    logger.trace('npm dependencies array is: \n', result)
 
-	return result
+    return result
 }
 
 /**
@@ -100,28 +100,28 @@ function createNpmDependenciesArray(dependencies) {
  * @returns {Promise.<T>}
  */
 function diffNpmInstalledPackages(targetDependencies) {
-	logger.info('checking npm dependencies...')
+    logger.info('checking npm dependencies...')
 
-	logger.trace('target npm packages are:\n', targetDependencies)
+    logger.trace('target npm packages are:\n', targetDependencies)
 
-	return extractInstalledPackagesData()
-		.then(function (installedPackages) {
-			logger.debug('installed npm packages are\n', _.keys(installedPackages))
+    return extractInstalledPackagesData()
+        .then(function (installedPackages) {
+            logger.debug('installed npm packages are\n', _.keys(installedPackages))
 
-			return _.omitBy(targetDependencies, function (targetVersion, name) {
-				if (installedPackages[name]) {
-					if (semver.satisfies(installedPackages[name].version, targetVersion)) {
-						return true
-					} else {
-						logger.debug(`package ${name} was installed, but doesn't match the target version - ${targetVersion}`)
-						return false
-					}
-				} else {
-					logger.debug(`package ${name} isn't installed`)
-					return false
-				}
-			})
-		})
+            return _.omitBy(targetDependencies, function (targetVersion, name) {
+                if (installedPackages[name]) {
+                    if (semver.satisfies(installedPackages[name].version, targetVersion)) {
+                        return true
+                    } else {
+                        logger.debug(`package ${name} was installed, but doesn't match the target version - ${targetVersion}`)
+                        return false
+                    }
+                } else {
+                    logger.debug(`package ${name} isn't installed`)
+                    return false
+                }
+            })
+        })
 }
 
 /**
@@ -130,26 +130,26 @@ function diffNpmInstalledPackages(targetDependencies) {
  * @returns {Promise.<T>}
  */
 function extractInstalledPackagesData() {
-	return npmLoad()
-		.then(function () {
-			const listCmd = Promise.promisify(glob, { multiArgs: true })
+    return npmLoad()
+        .then(function () {
+            const listCmd = Promise.promisify(glob, { multiArgs: true })
 
-			logger.trace('listing npm packages...')
+            logger.trace('listing npm packages...')
 
-			const nodePath = path.join(process.cwd(), 'node_modules/*/package.json')
-			return listCmd(nodePath, null)
-		})
-		.spread(function (data) {
-			const result = {}
+            const nodePath = path.join(process.cwd(), 'node_modules/*/package.json')
+            return listCmd(nodePath, null)
+        })
+        .spread(function (data) {
+            const result = {}
 
-			return _.reduce(data, function (accum, pkgPath) {
-				const pkg = require(pkgPath)
-				accum[pkg.name] = pkg
-				return accum
-			}, result)
-		})
-		.catch(function (err) {
-			logger.error(err)
-			return err
-		})
+            return _.reduce(data, function (accum, pkgPath) {
+                const pkg = require(pkgPath)
+                accum[pkg.name] = pkg
+                return accum
+            }, result)
+        })
+        .catch(function (err) {
+            logger.error(err)
+            return err
+        })
 }
