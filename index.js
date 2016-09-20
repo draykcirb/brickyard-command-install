@@ -13,7 +13,11 @@ const bowerInstaller = require('./bowerInstaller')
 
 module.exports = {
 	register,
-	run
+	run,
+	config: {
+		offline: false,
+		registry: null
+	}
 }
 
 /**
@@ -30,8 +34,8 @@ function register(cmd, optionsCallback) {
 		.usage('<program...> [options]')
 		.option('--registry <reg>', 'npm registry')
 		.option('--offline', 'bower offline installation')
-		.option('-D,--no-dev', 'do not install any devDependency')
-		.option('--save', 'save the dependencies to the root package')
+		// .option('-D,--no-dev', 'do not install any devDependency')
+		// .option('--save', 'save the dependencies to the root package')
 		.action(function (program) {
 			optionsCallback(Object.assign({ program: program }, this.opts()))
 		})
