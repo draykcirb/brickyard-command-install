@@ -35,7 +35,8 @@ function register(cmd, optionsCallback) {
         .usage('<program...> [options]')
         .option('--registry <reg>', 'npm registry')
         .option('--offline', 'bower offline installation')
-        // .option('-D,--no-dev', 'do not install any devDependency')
+        .option('--no-dev', 'do not install any devDependency')
+        .option('--dest-prefix <prefix>', 'output dir prefix for install bower dependencies')
         // .option('--save', 'save the dependencies to the root package')
         .action(function (program) {
             optionsCallback(Object.assign({ program: program }, this.opts()))
