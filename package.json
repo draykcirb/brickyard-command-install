@@ -76,5 +76,8 @@
       "post-rewrite": "npm install",
       "post-merge": "npm install"
     }
+  },
+  "engines": {
+    "node": ">=6.0"
   }
 }
