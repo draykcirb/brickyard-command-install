@@ -2,6 +2,7 @@
  * Created by scott on 16-3-29.
  */
 /* eslint import/no-unresolved:0 */
+
 'use strict'
 
 const Promise = require('bluebird')

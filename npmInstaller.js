@@ -1,6 +1,7 @@
 /**
  * Created by scott on 16-3-9.
  */
+
 'use strict'
 
 const npm = require('npm')
@@ -143,7 +144,7 @@ function extractInstalledPackagesData() {
             const result = {}
 
             return _.reduce(data, function (accum, pkgPath) {
-                const pkg = require(pkgPath)
+                const pkg = require(pkgPath) // eslint-disable-line
                 accum[pkg.name] = pkg
                 return accum
             }, result)

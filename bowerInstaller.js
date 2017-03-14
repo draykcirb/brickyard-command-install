@@ -2,6 +2,7 @@
 /**
  * Created by scott on 16-3-9.
  */
+
 'use strict'
 
 const bower = require('bower')
